@@ -7,7 +7,9 @@ export default {
         formatter: function (params) {
             params = params[0];
             var date = new Date(params.name);
-            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+            return date.getFullYear() + '-' + (date.getMonth()+1) + '-' +
+                date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '\n' + params.value[1]
+            // return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
         },
         axisPointer: {
             animation: false

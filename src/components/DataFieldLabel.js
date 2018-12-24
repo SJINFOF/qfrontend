@@ -42,7 +42,13 @@ export default {
     { name: "ETFSellAmount", label: "ETF赎回数量（ETF）" },
     { name: "ETFSellMoney", label: "ETF赎回金额（ETF）" }
   ],
-  keys: [
+  keyGroup: [
+    {
+      label: "价格信息",
+      item: ["PreClosePx", "OpenPx", "HighPx", "LowPx", "LastPx"]
+    }
+  ],
+  keyList: [
     "DateTime",
     "PreClosePx",
     "OpenPx",

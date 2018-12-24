@@ -44,7 +44,6 @@
                 <!--:LastPx="0.0"></price-info>-->
             </v-flex>
 
-
         </v-layout>
     </div>
 </template>
@@ -60,6 +59,8 @@
     import DataList from '@/components/DataList.vue'
     import axios from 'axios'
 
+    import sh2Data from '@/components/DataFieldLabel.js'
+
     export default {
         data () {
             return {
@@ -70,7 +71,8 @@
                     LowPx: 0.0,
                     LastPx: 0.0
                 },
-                serverMsg: ""
+                serverMsg: "",
+                dataStore: sh2Data['dataStore']
             }
         },
         computed: {
@@ -89,13 +91,27 @@
         },
         methods: {
             fetchData: function () {
-                let postData = this.$refs['searchBox'].getPostData()
-                // console.log(postData)
+                let postData = {}
+                let rawReq = this.$refs['searchBox'].getPostData()
+                postData['engine']= rawReq['engine']
+                postData['code'] = rawReq['code']
 
+
+                let url = '/query/'
+                if(rawReq['queryType']===0){
+                    url = url + 'get'
+                    postData['timestamp'] = rawReq['timestamp']
+                } else if(postData['queryType']===1){
+                    url = url + 'scan'
+                    postData['start'] = rawReq['start']
+                    postData['end'] = rawReq['end']
+                }
+
+                console.log(postData)
                 axios({
-                    url: '/aaa',
-                    method: 'post',
-                    data: postData
+                    url: url,
+                    method: 'get',
+                    params: postData
                 }).then((response)=>{
                     let respMeta = {
                         "errcode": response.data.errcode,
@@ -103,21 +119,32 @@
                         "queryTime": response.data.queryTime,
                     }
                     if(response.data.errcode === 0){
+                        console.log('No Error happened.')
                         this.updateData()
                     } else {
+                        console.warn('Backend returns an error.')
+                        console.warn(respMeta)
                         this.backendError()
                     }
                 }).catch(()=>(
                     this.fetchError()
                 ))
             },
+            saveToDataStore: function(data){
+                for(let i =0; i < len(sh2Data['keyList']); i++){
+                    keyName = sh2Data['keyList'][i]
+                    this.$data['dataStore'][keyName] = data[keyNames]
+                }
+            },
             updateData: function(){
+                let lastPx
 
             },
             fetchError: function () {
 
             },
             backendError: function (responseMeta) {
+                this.updateMeta(responseMeta)
 
             },
             updateMeta: function (responseMeta) {
@@ -126,6 +153,7 @@
                 } else {
                     this.$data.serverMsg = '查询失败，耗时' + responseMeta.queryTime + '，错误'+responseMeta.errcode + '，服务返回消息：'+responseMeta.msg
                 }
+                this.$refs.searchBox.setServerMsg(this.$data.serverMsg)
             }
         }
     }

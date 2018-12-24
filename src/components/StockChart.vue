@@ -1,9 +1,9 @@
 <template>
     <div>
-        <v-card id="priceChartContainer">
+        <v-card id="price-chart-container">
             <!--<v-layout row wrap>-->
                 <!--<v-flex sm12 fill-width>-->
-                    <div id="pricechart" style="width: 100%; height: 400px"></div>
+                    <div id="price-chart" style="width: 100%; height: 400px"></div>
                 <!--</v-flex>-->
             <!--</v-layout>-->
         </v-card>
@@ -38,16 +38,25 @@
         methods: {
             drawChart: function () {
                 // initialize echarts instance with prepared DOM
-                var myChart = echarts.init(document.getElementById('pricechart'));
+                var myChart = echarts.init(document.getElementById('price-chart'));
                 // draw chart
                 myChart.setOption(StockLineConfig);
             },
             resizeChart: function () {
+                let wrapperSize = document.getElementById('price-chart-container').getBoundingClientRect()
+                echarts.getInstanceByDom(document.getElementById('price-chart')).resize({width: Math.floor(wrapperSize.width) + 'px', height: Math.floor(wrapperSize.height) + 'px'})
 
             }
         },
         mounted: function () {
             this.drawChart()
+            let app = this
+            setTimeout(function (){
+                window.onresize = function () {
+                    app.resizeChart()
+                }
+            },200)
+
         }
 
     }
