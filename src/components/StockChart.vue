@@ -29,23 +29,36 @@
 
     import DemoData from '@/components/ChartMockData.json'
 
-    StockLineConfig['series'][0]['data'] = DemoData
+    // StockLineConfig['series'][0]['data'] = DemoData
 
 
     export default {
         data: () => ({
         }),
+        props: [
+            'title'
+        ],
         methods: {
             drawChart: function () {
                 // initialize echarts instance with prepared DOM
-                var myChart = echarts.init(document.getElementById('price-chart'));
+                let myChart = echarts.init(document.getElementById('price-chart'));
                 // draw chart
+                StockLineConfig['title']['text'] = this.$props['title']
                 myChart.setOption(StockLineConfig);
             },
             resizeChart: function () {
                 let wrapperSize = document.getElementById('price-chart-container').getBoundingClientRect()
                 echarts.getInstanceByDom(document.getElementById('price-chart')).resize({width: Math.floor(wrapperSize.width) + 'px', height: Math.floor(wrapperSize.height) + 'px'})
 
+            },
+            setData: function (data) {
+                let myChart = echarts.getInstanceByDom(document.getElementById('price-chart'))
+                let newOption = StockLineConfig
+                newOption['title']['text'] = this.$props['title']
+                newOption['series'][0]['data'] = data
+                console.log('resetting data')
+                myChart.setOption(newOption)
+                this.resizeChart()
             }
         },
         mounted: function () {

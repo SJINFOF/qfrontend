@@ -17,7 +17,7 @@ export default {
     },
     dataZoom:{},
     xAxis: {
-        type: 'time',
+        type: 'value',
         splitLine: {
             show: false
         }
@@ -30,10 +30,11 @@ export default {
         }
     },
     series: [{
-        name: '模拟数据',
+        name: '数据',
         type: 'line',
         showSymbol: false,
-        hoverAnimation: false/*,
+        hoverAnimation: false,
+        data: []/*,
         data: data*/
     }]
 };

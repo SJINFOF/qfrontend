@@ -7,11 +7,11 @@
             <v-divider></v-divider>
             <v-list>
                 <template
-                        v-for="(value, key) in data"
+                        v-for="d in data"
                 >
                     <v-list-tile>
-                        <v-list-tile-content>{{ key }}</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{ value }}</v-list-tile-content>
+                        <v-list-tile-content>{{ d.name }}</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ d.value }}</v-list-tile-content>
                     </v-list-tile>
                 </template>
             </v-list>
@@ -22,6 +22,13 @@
 <style></style>
 
 <script>
+    // Data Example
+    // [
+    //      { "name": "showname",
+    //         "value": val
+    //      }
+    //
+    // ]
     export default {
         data: () => ({
 

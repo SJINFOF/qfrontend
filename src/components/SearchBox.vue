@@ -6,7 +6,8 @@
 
                 <v-tab
                     :key="0"
-                ripple>
+                    @click="queryType=0"
+                    ripple>
                     GET
                 </v-tab>
                 <v-tab-item
@@ -95,7 +96,8 @@
 
                 <v-tab
                     :key="1"
-                ripple>
+                    @click="queryType=1"
+                    ripple>
                     Scan
                 </v-tab>
                 <v-tab-item
@@ -301,11 +303,11 @@
                 curDate: new Date().toISOString().substr(0, 10),
                 start_date: new Date().toISOString().substr(0, 10),
                 start_time: "00:00",
-                start_datetime: "",
+                start_datetime: "20180103092501",
                 startDatetimeShowPhase: false, // false: datepick true:timepick
                 end_date: new Date().toISOString().substr(0, 10),
                 end_time: "00:00",
-                end_datetime: "",
+                end_datetime: "20180103092502",
                 endDatetimeShowPhase: false, // false: datepick true:timepick
 
                 ts_date: new Date().toISOString().substr(0, 10),
@@ -380,9 +382,11 @@
                 if(this.$data.queryType===0){
                     data['timestamp'] = this.$data.ts_datetime
                 } else {
+                    console.log('hit')
                     data['start'] = this.$data.start_datetime
                     data['end'] = this.$data.end_datetime
                 }
+                console.log(data)
                 return data
             },
             setServerMsg: function (message) {
