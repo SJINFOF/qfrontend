@@ -34,7 +34,7 @@
             <!--</v-flex>-->
             <v-flex sm3>
                 <data-list
-                    :title="'价格信息'"
+                    :title="PxInfoTitle"
                     :data="PxInfoShowcase"></data-list>
                 <!--<price-info-->
                 <!--:PreClosePx="0.0"-->
@@ -72,18 +72,31 @@
                     LastPx: 0.0
                 },
                 serverMsg: "",
-                dataStore: sh2Data['dataStore']
+                dataStore: [],
+                searchType: 0
             }
         },
         computed: {
+            PxInfoTitle: function () {
+                return sh2Data['keyGroup']['PriceInfo']['label']
+            },
             PxInfoShowcase: function () {
-                return {
-                    "昨收价": this.$data['PxInfo']['PreClosePx'],
-                    "开盘价": this.$data['PxInfo']['OpenPx'],
-                    "最高价": this.$data['PxInfo']['HighPx'],
-                    "最低价": this.$data['PxInfo']['LowPx'],
-                    "最新价": this.$data['PxInfo']['LastPx']
-                }
+                // return {
+                //     "昨收价": this.$data['PxInfo']['PreClosePx'],
+                //     "开盘价": this.$data['PxInfo']['OpenPx'],
+                //     "最高价": this.$data['PxInfo']['HighPx'],
+                //     "最低价": this.$data['PxInfo']['LowPx'],
+                //     "最新价": this.$data['PxInfo']['LastPx']
+                // }
+                let datas = {}
+                // Fetch keylist
+                let keys = sh2Data['keyGroup']['PriceInfo']['item']
+                keys.forEach((item)=>{
+                    datas[sh2Data['keyLabel'][item]] = this.$data['dataStore'][item]
+                })
+                console.log(datas)
+                return datas
+
             }
         },
         components: {
@@ -99,9 +112,11 @@
 
                 let url = '/query/'
                 if(rawReq['queryType']===0){
+                    this.$data['queryType']=0
                     url = url + 'get'
                     postData['timestamp'] = rawReq['timestamp']
                 } else if(postData['queryType']===1){
+                    this.$data['queryType']=1
                     url = url + 'scan'
                     postData['start'] = rawReq['start']
                     postData['end'] = rawReq['end']
@@ -118,9 +133,10 @@
                         "msg": response.data.msg,
                         "queryTime": response.data.queryTime,
                     }
+                    this.updateMeta(respMeta)
                     if(response.data.errcode === 0){
                         console.log('No Error happened.')
-                        this.updateData()
+                        this.updateData(response.data.data)
                     } else {
                         console.warn('Backend returns an error.')
                         console.warn(respMeta)
@@ -132,12 +148,45 @@
             },
             saveToDataStore: function(data){
                 for(let i =0; i < len(sh2Data['keyList']); i++){
-                    keyName = sh2Data['keyList'][i]
+                    let keyName = sh2Data['keyList'][i]
                     this.$data['dataStore'][keyName] = data[keyNames]
                 }
             },
-            updateData: function(){
-                let lastPx
+            updateData: function(rawdata){
+                this.$data['dataStore'] = []
+                // let newdata = sh2Data['dataStore']
+                let newdata = {}
+                let keyList = sh2Data['keyList']
+                console.log(rawdata)
+                rawdata.forEach((data)=>{
+                    // keyList.forEach((key)=> {
+                    //     // judge from raw data field, not ui.
+                    //
+                    //
+                    //     if (Array.isArray(data['ui' + key])) {
+                    //         //if key is a array
+                    //         newdata[key] = data['ui' + key].slice()
+                    //     } else {
+                    //         // if key is a value
+                    //         newdata[key] = data['ui' + key]
+                    //     }
+                    //
+                    // })
+                    for(let i in data){
+                        let formalName = i.replace(new RegExp("arr|ui|str"),"")
+                        if(keyList.includes(formalName)){
+                            if(Array.isArray(data[i])){
+                                newdata[formalName] = data[i].slice()
+                            } else {
+                                newdata[formalName] = data[i]
+                            }
+                        }
+                        console.log(formalName)
+                    }
+                })
+
+                // console.log(Array.isArray(rawdata[0]['arrBidNumOrders']))
+                console.log(newdata)
 
             },
             fetchError: function () {

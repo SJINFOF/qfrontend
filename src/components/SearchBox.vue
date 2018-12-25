@@ -297,7 +297,7 @@
                 ],
                 queryType: 0,
                 searchEngine: "",
-                stockCode: "",
+                stockCode: "000011",
                 curDate: new Date().toISOString().substr(0, 10),
                 start_date: new Date().toISOString().substr(0, 10),
                 start_time: "00:00",
@@ -310,7 +310,7 @@
 
                 ts_date: new Date().toISOString().substr(0, 10),
                 ts_time: "00:00",
-                ts_datetime: "",
+                ts_datetime: "20180103092501",
                 tsDatetimeShowPhase: false, // false: datepick true:timepick
 
                 menuTsDateTime: false,
@@ -387,6 +387,7 @@
             },
             setServerMsg: function (message) {
                 this.$data.serverMsg = message
+                console.log(message)
             }
         },
         watch: {
