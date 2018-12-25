@@ -211,7 +211,12 @@
                     }
                 }).catch(()=>(
                     this.fetchError()
-                ))
+                )).finally(()=>{
+                    // Disable search button loading animation
+                    setTimeout(()=>{
+                        this.$refs['searchBox'].EndLoader()
+                    }, 100)
+                })
             },
             saveToDataStore: function(data){
                 for(let i =0; i < len(sh2Data['keyList']); i++){

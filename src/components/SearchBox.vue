@@ -362,13 +362,28 @@
                 this.$data.tsDatetimeShowPhase = 0
                 this.$data.menuTsDateTime = false
             },
+            StartLoader: function() {
+                this.$data.loader = 'searchLoading'
+                const l = this.loader
+                console.log(l)
+                this[l] = !this[l]
+
+                // setTimeout(() => (this[l] = false), 3000)
+                //
+                // this.loader = null
+
+
+                // this.$data.loader = 'searchLoading'
+            },
             EndLoader: function () {
+                const l = this.loader
+                // this[l] = !this[l]
+                this[l] = false
                 this.loader = null
             },
             RunSearch: function () {
-                this.$data.loader = 'searchLoading'
+                this.StartLoader()
                 this.$emit('StartSearch')
-
             },
             getPostData: function () {
                 let data = {
@@ -394,16 +409,16 @@
                 console.log(message)
             }
         },
-        watch: {
-            loader () {
-                const l = this.loader
-                this[l] = !this[l]
-
-                setTimeout(() => (this[l] = false), 3000)
-
-                this.loader = null
-            }
-        }
+        // watch: {
+        //     loader () {
+        //         const l = this.loader
+        //         this[l] = !this[l]
+        //
+        //         setTimeout(() => (this[l] = false), 3000)
+        //
+        //         this.loader = null
+        //     }
+        // }
     }
 </script>
 
