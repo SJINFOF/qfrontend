@@ -225,7 +225,9 @@
             <v-card-actions>
                 <v-container fluid>
                     <v-layout row wrap>
-                        {{ serverMsg }}
+
+
+
                         <v-spacer></v-spacer>
                         <v-btn
                                 :loading="searchLoading"
@@ -235,6 +237,18 @@
                         >
                             Run Search
                         </v-btn>
+                    </v-layout>
+                    <v-layout fluid>
+                        <v-flex xs12>
+                        <v-alert
+                                v-model="showServerMsg"
+                                :type="(serverState===0)?'success':'error'"
+                                :color="(serverState===0)?'success':'warning'"
+                                :icon="(serverState===0)?'check_circle':'warning'"
+                                transition="scale-transition" >
+                            {{ serverMsg }}
+                        </v-alert>
+                        </v-flex>
                     </v-layout>
 
                 </v-container>
@@ -323,7 +337,10 @@
                 searchLoading: false,
 
                 searchMessage: "",
-                serverMsg: ""
+
+                showServerMsg: false,
+                serverMsg: "",
+                serverState: 0 // 0: 正常
             }
         },
         // props: [
@@ -383,6 +400,7 @@
             },
             RunSearch: function () {
                 this.StartLoader()
+                this.hideServerMsg()
                 this.$emit('StartSearch')
             },
             getPostData: function () {
@@ -404,9 +422,14 @@
                 console.log(data)
                 return data
             },
-            setServerMsg: function (message) {
+            setServerMsg: function (message, state) {
                 this.$data.serverMsg = message
-                console.log(message)
+                this.$data.showServerMsg = true
+                this.$data.serverState = state || 0
+                // console.log(message)
+            },
+            hideServerMsg: function () {
+                this.$data.showServerMsg = false
             }
         },
         // watch: {

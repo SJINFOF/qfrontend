@@ -277,7 +277,7 @@
                 } else {
                     this.$data.serverMsg = '查询失败，耗时' + responseMeta.queryTime + '，错误'+responseMeta.errcode + '，服务返回消息：'+responseMeta.msg
                 }
-                this.$refs.searchBox.setServerMsg(this.$data.serverMsg)
+                this.$refs.searchBox.setServerMsg(this.$data.serverMsg, responseMeta.errcode)
             },
             updateSeriesData: function (rawData) {
                 this.$data['showType'] = 1
