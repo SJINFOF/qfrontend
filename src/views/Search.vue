@@ -14,7 +14,7 @@
         <!--</v-layout>-->
         <!--<v-spacer></v-spacer>-->
         <!--<v-layout row wrap>-->
-            <v-flex xs12>
+            <v-flex xs12 v-show="showType===1">
                 <!--<v-card>-->
                     <!--bbba-->
                 <!--</v-card>-->
@@ -35,19 +35,21 @@
                     <!--</v-container>-->
                 <!--</v-card>-->
             <!--</v-flex>-->
-            <v-flex sm4>
+
                 <template
                         v-if="showType===0"
                     v-for="g in getInfoShowcase">
-                    <data-list
-                        v-if="g.type==='group'"
-                        :title="g.title"
-                        :data="g.data"
-                    ></data-list>
-                    <data-array
-                        v-if="g.type==='array'"
-                        :title="g.title"
-                        :data="g.data"></data-array>
+                    <v-flex sm4>
+                        <data-list
+                            v-if="g.type==='group'"
+                            :title="g.title"
+                            :data="g.data"
+                        ></data-list>
+                        <data-array
+                            v-if="g.type==='array'"
+                            :title="g.title"
+                            :data="g.data"></data-array>
+                    </v-flex>
                 </template>
                 <!--<data-list-->
                         <!--v-if="showType===0"-->
@@ -59,7 +61,6 @@
                 <!--:HighPx="0.0"-->
                 <!--:LowPx="0.0"-->
                 <!--:LastPx="0.0"></price-info>-->
-            </v-flex>
 
         </v-layout>
     </div>
@@ -278,8 +279,12 @@
                 // Serialize:
                 let data = serializeData(rawData)
                 this.$refs.priceChart.setData(data)
-                console.log(data)
-            }
+                setTimeout(()=>{
+                    this.$refs.priceChart.resizeChart()
+                },300)
+
+                // console.log(data)
+            },
         }
     }
 </script>

@@ -85,7 +85,7 @@
                 // } else {
                     console.log(this.$props["data"])
                     for(let i = 0;i<this.$props["data"][0]["data"].length;i++){
-                        lineName.push("#"+i.toString())
+                        lineName.push("#"+(i+1).toString())
                     }
                 // }
                 let showData = []

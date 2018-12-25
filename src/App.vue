@@ -9,7 +9,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-container grid-list-lg>
+      <v-container grid-list-md>
         <router-view></router-view>
       </v-container>
     </v-content>

@@ -58,6 +58,7 @@
                 newOption['series'][0]['data'] = data
                 console.log('resetting data')
                 myChart.setOption(newOption)
+
                 this.resizeChart()
             }
         },
